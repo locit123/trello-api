@@ -6,13 +6,13 @@
 
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import { boardRouters } from "~/routes/v1/boardRouters";
+import { boardRouter } from "~/routes/v1/boardRouters";
 const Router = express.Router();
 //check APIs v1/status
 Router.get("/status", (req, res) => {
   res.status(StatusCodes.OK).json({ message: "Api V1 are ready to use" });
 });
 //Board APIs
-Router.use("/board", boardRouters);
+Router.use("/boards", boardRouter);
 
 export const APIs_V1 = Router;
