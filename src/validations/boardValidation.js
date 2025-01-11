@@ -35,13 +35,10 @@ const createNew = async (req, res, next) => {
       }),
   });
   try {
-    console.log("check req.body", req.body);
     //set abortEarly:false -> trả về tất cả lỗi khi validation
     await correctCondition.validateAsync(req.body, { abortEarly: false });
-    // next();
-    res
-      .status(StatusCodes.CREATED)
-      .json({ message: "Note API create new board" });
+    //Validation dữ liệu hợp lệ thì cho đi tiếp
+    next();
   } catch (error) {
     console.log(error);
     //mã 422 failed khi lỗi validation
