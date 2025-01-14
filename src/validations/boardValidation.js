@@ -5,7 +5,7 @@
  */
 import Joi from "joi";
 import { StatusCodes } from "http-status-codes";
-
+import ApiError from "~/utils/ApiError";
 const createNew = async (req, res, next) => {
   const correctCondition = Joi.object({
     title: Joi.string().required().min(3).max(50).trim().strict().messages({
@@ -40,11 +40,13 @@ const createNew = async (req, res, next) => {
     //Validation dữ liệu hợp lệ thì cho đi tiếp
     next();
   } catch (error) {
-    console.log(error);
-    //mã 422 failed khi lỗi validation
-    res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({
-      errors: new Error(error).message,
-    });
+    const errorMessage = new Error(error).message;
+    const customError = new ApiError(
+      //mã 422 failed khi lỗi validation
+      StatusCodes.UNPROCESSABLE_ENTITY,
+      errorMessage
+    );
+    next(customError);
   }
 };
 

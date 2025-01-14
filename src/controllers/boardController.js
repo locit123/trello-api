@@ -4,18 +4,13 @@
  * "A bit of fragrance clings to the hand that gives flowers!"
  */
 import { StatusCodes } from "http-status-codes";
-
-const createNew = (req, res, next) => {
+import { boardService } from "~/services/boardService";
+const createNew = async (req, res, next) => {
   try {
-    console.log("check req.body", req.body);
-    console.log("check req.query", req.query);
-    console.log("check req.params", req.params);
-    res.status(StatusCodes.CREATED).json({ message: "post from controller" });
+    const createNewBoard = await boardService.createNew(req.body);
+    res.status(StatusCodes.CREATED).json(createNewBoard);
   } catch (error) {
-    //mã 500 failed khi lỗi validation
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-      errors: new Error(error).message,
-    });
+    next(error);
   }
 };
 
